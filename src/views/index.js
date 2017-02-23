@@ -5,11 +5,11 @@ const router = require('koa-router')();
 const home = require('./home.js');
 
 module.exports = function(app){
-    return co.wrap(function *(ctx, next){
-        router.use('/', home.routes(), home.allowedMethods());
+    router.use('/', home.routes(), home.allowedMethods());
+    app.use(router.routes());
+    app.use(router.allowedMethods());
 
-        app.use(router.routes());
-        app.use(router.allowedMethods());
+    return co.wrap(function *(ctx, next){
         yield next();
     });
 };
