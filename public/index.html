@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Koa Example</title>
+    <title>Test</title>
 </head>
 <body>
-    <h1>Koa Example</h1>
-    <p>see more in code</p>
-
+    
     <script src="//cdn.bootcss.com/socket.io/1.7.2/socket.io.js"></script>
     <script>
         //建立websocket连接
@@ -19,8 +17,6 @@
         socket.on('message', function(data){
             console.log(data);
         });
-
-        socket.emit('message', 'hahaha');
     </script>
 </body>
 </html>
