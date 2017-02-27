@@ -5,9 +5,10 @@
   "main": "app.js",
   "scripts": {
     "start": "node src/ --harmony --debug",
+    "io": "node src/io.js --harmony --debug",
     "pm2:init": "pm2 start src/ --name 'koa-example' --node-args '--harmony --debug' --watch 'src/'",
     "debug": "node-inspector -p 5859",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [
     "koa",
@@ -34,6 +35,9 @@
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
-    "node-inspector": "^0.12.8"
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "node-inspector": "^0.12.8",
+    "supertest": "^3.0.0"
   }
 }

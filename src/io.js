@@ -1,20 +1,8 @@
 'use strict';
 
-
-const Koa = require('koa');
-const convert = require('koa-convert');
-const bodyparser = require('koa-bodyparser');
-const logger = require('koa-logger');
-const responseTime = require('koa-response-time');
-
-const app = new Koa();
-app.use(convert(responseTime()));
-app.use(convert(bodyparser()));
-app.use(convert(logger()));
-
-
-const server = require('http').Server(app.callback());
+const server = require('http').createServer();
 const io = require('socket.io')(server);
+const PORT = 3331;
 
 // socket handle
 io.on('connection', socket => {
@@ -40,4 +28,6 @@ setInterval(function(){
     io.emit('message', '广播');
 }, 30000);
 
-server.listen(3331);
+server.listen(PORT);
+
+console.log('Server listening on port: ', PORT);

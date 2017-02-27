@@ -28,7 +28,7 @@ app.keys = [SECRET];
 app.use(convert(session()));
 app.use(convert(require('koa-static')(config.get('public_path'))));
 
-app.use(convert(require('./services')(app)));
-app.use(convert(require('./views')(app)));
+require('./services')(app, config);
+require('./views')(app);
 
 module.exports = app;

@@ -8,8 +8,4 @@ module.exports = function(app){
     router.use('/', home.routes(), home.allowedMethods());
     app.use(router.routes());
     app.use(router.allowedMethods());
-
-    return co.wrap(function *(ctx, next){
-        yield next();
-    });
 };

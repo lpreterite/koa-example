@@ -66,7 +66,8 @@ class Restful{
         return co.wrap(function *(ctx, next){
             const params = ctx.params;
             const options = Object.assign({}, params.sequelize);
-            ctx.body = yield _getEntity(rest.model, params, rest.idField, options);
+            let result = yield _getEntity(rest.model, params, rest.idField, options);
+            ctx.body = result || {};
             ctx.status = 200;
             yield next();
         });
@@ -76,12 +77,14 @@ class Restful{
 
         return co.wrap(function *(ctx, next){
             const options = ctx.params.sequelize || {};
-            const data = ctx.body;
+            const data = ctx.request.body;
 
             if (Array.isArray(data)) {
-                ctx.body = yield rest.model.bulkCreate(data, options);
+                const result = yield rest.model.bulkCreate(data, options);
+                ctx.body = result.map(item => item.toJSON());
             }else{
-                ctx.body = yield rest.model.create(data, options);
+                const result = yield rest.model.create(data, options);
+                ctx.body = result.toJSON();
             }
             ctx.status = 201;
 

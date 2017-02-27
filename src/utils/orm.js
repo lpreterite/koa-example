@@ -41,7 +41,7 @@ exports.service = function(router, opts){
     router
         .get('/', convert(restful.find()))
         .get('/:id', convert(restful.get()))
-        .post('/:id', convert(restful.create()))
+        .post('/', convert(restful.create()))
         .put('/:id', convert(restful.update()))
         .patch('/:id', convert(restful.patch()))
         .del('/:id', convert(restful.del()));
