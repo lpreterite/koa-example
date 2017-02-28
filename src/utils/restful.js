@@ -101,7 +101,7 @@ class Restful{
             instance = yield instance.update(ctx.request.body, options);
 
             ctx.status = 200;
-            ctx.body = instance;
+            ctx.body = instance.toJSON();
 
             yield next();
         });
@@ -125,9 +125,10 @@ class Restful{
             const params = ctx.params;
             const options = Object.assign({}, params.sequelize);
             let instance = yield _getEntity(rest.model, params, rest.idField, options);
-            
+            ctx.body = instance.toJSON();
+
             yield instance.destroy();
-            this.status = 204;
+            ctx.status = 200;
 
             yield next();
         });

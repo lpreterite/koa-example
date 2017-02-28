@@ -16,6 +16,7 @@ const handler = {
     }),
     afterHome: co.wrap(function *(ctx, next) {
         ctx.body += '<p>233</p>';
+        ctx.body += '<p>'+typeof ctx.services.users+'</p>';
         yield next();
     })
 };

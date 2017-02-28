@@ -34,6 +34,14 @@ module.exports = function(app, config){
 
     sequelize.sync();
 
+    app.use((function(sequelize, services){
+        return co.wrap(function *(ctx, next) {
+            ctx.sequelize = sequelize;
+            ctx.services = services;
+            yield next();
+        });
+    })(sequelize, services));
+    
     app.use(router.routes());
     app.use(router.allowedMethods());
 };
