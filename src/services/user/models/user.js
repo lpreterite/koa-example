@@ -1,25 +1,22 @@
 'use strict';
-
-const Sequelize = require('sequelize');
-
-module.exports = function(sequelize) {
+module.exports = function(sequelize, DataTypes) {
     const user = sequelize.define('users', {
         email: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           allowNull: false,
           unique: true
         },
         password: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           allowNull: false
         },
-        nicename: Sequelize.STRING(36),
+        nicename: DataTypes.STRING(36),
         username: {
-          type: Sequelize.STRING(36),
+          type: DataTypes.STRING(36),
           allowNull: false,
           unique: true,
         },
-        roles: Sequelize.STRING
+        roles: DataTypes.STRING
     }, {
         classMethods: {
           associate: function(models){

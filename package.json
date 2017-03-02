@@ -38,6 +38,7 @@
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "node-inspector": "^0.12.8",
+    "sequelize-cli": "^2.5.1",
     "supertest": "^3.0.0"
   }
 }
