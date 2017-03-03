@@ -11,12 +11,16 @@ describe('Auth', function(){
             .post('/auth/login')
             .set('Accept', 'text/html')
             .send({ username: 'Packy1488272238300', password: '654321' })
-            .expect(200, 'test page', done);
+            .expect(302)
+            .expect(/="\/test"/)
+            .end(done);
     });
     it('logout', function(done){
         request(server)
             .get('/auth/logout')
             .set('Accept', 'text/html')
-            .expect(200, 'Koa Example', done);
+            .expect(302)
+            .expect(/="\/"/)
+            .end(done);
     });
 });

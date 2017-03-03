@@ -6,8 +6,10 @@ const db = require('../migrations/models');
 const Router = require('koa-router');
 
 module.exports = function(app){
-    // db start
-    db.sequelize.sync();
+    //use auth middleware
+    //must be up to top
+    app.use(passport.initialize());
+    app.use(passport.session());
 
     //auth setting
     passport.serializeUser(function(user, done) {
@@ -26,13 +28,9 @@ module.exports = function(app){
     //auth plugin
     const LocalStrategy = require('passport-local').Strategy;
     passport.use(new LocalStrategy(function(username, password, done) {
-
-        db.models.users.findAndCount().then(data=>console.log(data));
-
         db.models.users
             .findOne({ where: { username } })
             .then(user => {
-                console.log(user);
                 if (username === user.username && password === user.password) {
                     done(null, user);
                 } else {
@@ -56,7 +54,4 @@ module.exports = function(app){
     });
     app.use(router.routes());
     app.use(router.allowedMethods());
-
-    app.use(passport.initialize());
-    app.use(passport.session());
 };
