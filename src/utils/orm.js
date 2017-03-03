@@ -33,17 +33,34 @@ exports.associate = function(){
 };
 
 //生成restful路由
-exports.service = function(router, opts){
+exports.service = function(router, hooks, opts){
     opts = opts || {};
 
     const restful = new Restful(opts);
+    let actions = {
+        find: [],
+        get: [],
+        create: [],
+        update: [],
+        patch: [],
+        remove: []
+    };
+    Object.keys(actions).forEach(function(method){
+        actions[method] = [].concat(
+            hooks.before.all || [],
+            hooks.before[method] || [],
+            restful[method](),
+            hooks.after[method] || [],
+            hooks.after.all || []
+        );
+    });
 
     router
-        .get('/', convert(restful.find()))
-        .get('/:id', convert(restful.get()))
-        .post('/', convert(restful.create()))
-        .put('/:id', convert(restful.update()))
-        .patch('/:id', convert(restful.patch()))
-        .del('/:id', convert(restful.del()));
+        .get('/', convert.compose.apply(convert, actions.find))
+        .get('/:id', convert.compose.apply(convert, actions.get))
+        .post('/', convert.compose.apply(convert, actions.create))
+        .put('/:id', convert.compose.apply(convert, actions.update))
+        .patch('/:id', convert.compose.apply(convert, actions.patch))
+        .del('/:id', convert.compose.apply(convert, actions.remove));
     return router;
 };

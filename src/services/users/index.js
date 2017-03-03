@@ -1,13 +1,12 @@
 'use strict';
 
-const getModels = require('./models');
 const service = require('../../utils').service;
+const hooks = require('./hooks');
 const Router = require('koa-router');
 
-module.exports = function(sequelize){
-    const models = getModels(sequelize);
+module.exports = function(models){
     const router = new Router({prefix: '/users'});
-    service(router, { model: models.users });
+    service(router, hooks, { model: models.users });
 
     return router;
 };

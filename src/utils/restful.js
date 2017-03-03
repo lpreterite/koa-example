@@ -118,7 +118,7 @@ class Restful{
             yield next();
         });
     }
-    del(){
+    remove(){
         let rest = this;
 
         return co.wrap(function *(ctx, next){
