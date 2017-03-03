@@ -1,7 +1,7 @@
 'use strict';
 
 const co = require('co');
-const convert = require('koa-convert');
+const compose = require('koa-convert').compose;
 const Sequelize = require('sequelize');
 const Restful = require('./restful');
 
@@ -56,11 +56,11 @@ exports.service = function(router, hooks, opts){
     });
 
     router
-        .get('/', convert.compose.apply(convert, actions.find))
-        .get('/:id', convert.compose.apply(convert, actions.get))
-        .post('/', convert.compose.apply(convert, actions.create))
-        .put('/:id', convert.compose.apply(convert, actions.update))
-        .patch('/:id', convert.compose.apply(convert, actions.patch))
-        .del('/:id', convert.compose.apply(convert, actions.remove));
+        .get('/', compose(actions.find))
+        .get('/:id', compose(actions.get))
+        .post('/', compose(actions.create))
+        .put('/:id', compose(actions.update))
+        .patch('/:id', compose(actions.patch))
+        .del('/:id', compose(actions.remove));
     return router;
 };

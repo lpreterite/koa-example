@@ -28,6 +28,8 @@ app.keys = [SECRET];
 app.use(convert(session()));
 app.use(convert(require('koa-static')(config.get('public_path'))));
 
+//初次化 令牌控制
+require('./auth')(app);
 require('./services')(app, config);
 require('./views')(app);
 

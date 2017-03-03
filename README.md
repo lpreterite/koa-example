@@ -4,9 +4,16 @@
 ## 快速开始
 ```
 $ npm i
-$ sequelize db:migrate
-$ sequelize db:seed:all
 $ npm run start
+```
+
+## 数据库操作
+```
+# 更新数据库
+$ sequelize db:migrate
+
+# 添加数据
+$ sequelize db:seed:all
 ```
 
 ## 断点测试

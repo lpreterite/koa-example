@@ -9,18 +9,13 @@ const fs = Promise.promisifyAll(require('fs'));
 
 const handler = {
     home: co.wrap(function *(ctx, next) {
-        const filepath = path.join(ctx.config.get('template_path'), 'index.html');
+        const filepath = path.join(ctx.config.get('template_path'), 'test.html');
         ctx.body = fs.createReadStream(filepath);
-        yield next();
-    }),
-    afterHome: co.wrap(function *(ctx, next) {
-        ctx.body += '<p>233</p>';
-        ctx.body += '<p>'+typeof ctx.services.users+'</p>';
         yield next();
     })
 };
 
-router.get('/', compose([handler.home, handler.afterHome]));
+router.get('/', compose([handler.home]));
 // must in babel
 // router.get('/', convert.compose(...[handler.home, handler.afterHome]));
 module.exports = router;
