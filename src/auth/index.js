@@ -1,8 +1,8 @@
 'use strict';
 
 const passport = require('koa-passport');
-const co = require('co');
 const db = require('../../migrations/models');
+const co = require('co');
 
 module.exports = function(app){
     //passport plugin init
