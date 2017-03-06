@@ -21,10 +21,11 @@ module.exports = function(app){
         .forEach((file)=>{
             const service = require(path.join(__dirname, file));
             services[file] = service(db.models);
-            router.use('/api', services[file].routes(), services[file].allowedMethods());
+            const baseUri = ['auth'].indexOf(file) > -1 ? '' : '/api';
+            router.use(baseUri, services[file].routes(), services[file].allowedMethods());
         });
 
-    console.log('init services');
+    console.log('init services', Object.keys(services));
 
     //设置关联
     const models = db.models;
