@@ -9,16 +9,11 @@ const cors = require('kcors');
 const responseTime = require('koa-response-time');
 const json = require('koa-json');
 const session = require('koa-generic-session');
-const configure = require('./utils').configure;
 
 const app = new Koa();
 // ENV
 const SECRET = process.env.SECRET || config.get('secret');
 
-app.use(configure(function *(ctx, next){
-    ctx.config = config;
-    yield next();
-}));
 app.use(convert(cors()));
 app.use(convert(responseTime()));
 app.use(convert(bodyparser()));

@@ -1,14 +1,17 @@
 'use strict';
 const co = require('co');
+const authHooks = require('../../auth/hooks');
 
 exports.before = {
     all: [
         co.wrap(function *(ctx, next){
-            console.log('all hook:',ctx.request.body);
+            console.log('all hook:', ctx.request.body);
             yield next();
         })
     ],
-    find: [],
+    find: [
+        authHooks.authToken({passthrough: false})
+    ],
     get: [],
     create: [],
     update: [],
