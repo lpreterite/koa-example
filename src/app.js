@@ -11,15 +11,13 @@ const json = require('koa-json');
 const session = require('koa-generic-session');
 
 const app = new Koa();
-// ENV
-const SECRET = process.env.SECRET || config.get('secret');
 
 app.use(convert(cors()));
 app.use(convert(responseTime()));
 app.use(convert(bodyparser()));
 app.use(convert(json()));
 app.use(convert(logger()));
-app.keys = [SECRET];
+app.keys = [config.get('secret')];
 app.use(convert(session()));
 app.use(convert(require('koa-static')(config.get('public_path'))));
 

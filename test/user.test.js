@@ -5,22 +5,6 @@ const app = require('../src/app');
 const server = require('http').createServer(app.callback());
 
 describe('User', function(){
-    it('get users', function(done){
-        request(server)
-            .get('/api/users')
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(200, done);
-    });
-
-    it('get user', function(done){
-        request(server)
-            .get('/api/users/1')
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(200,done);
-    });
-
     it('create user', function(done){
         let name = 'Packy'+Date.now();
         let user = {
@@ -35,6 +19,30 @@ describe('User', function(){
             .expect(201, done);
     });
 
+    it('get users', function(done){
+        request(server)
+            .get('/api/users')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200, done);
+    });
+
+    it('get user', function(done){
+        request(server)
+            .get('/api/users')
+            .end((err, res)=>{
+                let user = res.body.data.pop();
+                request(server)
+                    .get('/api/users/'+user.id)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(function(res){
+                        if(!res.body.hasOwnProperty('password')) throw new Error('can not has password!');
+                    })
+                    .expect(200,done);
+            });
+    });
+
     it('update user', function(done){
         this.timeout(30000);
         request(server)
@@ -47,9 +55,6 @@ describe('User', function(){
                     .send(user)
                     .expect('Content-Type', /json/)
                     .expect(200)
-                    .expect((res)=>{
-                        if(res.body.password !== user.password) throw new Error('password do not updated!');
-                    })
                     .end(done);
             });
     });

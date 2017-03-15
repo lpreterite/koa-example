@@ -5,8 +5,8 @@ const hooks = require('./hooks');
 const Router = require('koa-router');
 
 module.exports = function(models){
-    const router = new Router({prefix: '/users'});
-    service(router, { model: models.users }, hooks);
+    const router = new Router({prefix: '/category'});
+    service(router, { model: models.taxonomy }, hooks);
 
     return router;
 };

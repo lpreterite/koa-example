@@ -8,13 +8,13 @@ const jwt = require('koa-jwt');
 function isAuthenticated(){
     return compose([
         co.wrap(function *(ctx, next){
-            if(!ctx.state.user) ctx.throw('UnauthorizedError', 401);
+            if(ctx.isUnauthenticated()) ctx.throw('UnauthorizedError', 401);
             yield next();
         })
     ]);
 }
 
-function authToken(opts){
+function verifyToken(opts){
     opts = Object.assign({
         secret: config.get('secret'),
         passthrough: true
@@ -31,4 +31,4 @@ function authToken(opts){
 }
 
 exports.isAuthenticated = isAuthenticated;
-exports.authToken = authToken;
+exports.verifyToken = verifyToken;
