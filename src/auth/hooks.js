@@ -30,5 +30,22 @@ function verifyToken(opts){
     ]);
 }
 
+function populateUser(){
+    return co.wrap(function *(ctx, next){
+
+        yield next();
+    });
+}
+
+function associateCurrentUser(opts){
+    opts = Object.assign({as: 'uid'}, opts);
+    return co.wrap(function *(ctx, next){
+        ctx.body[opts.as] = ctx.state.user.id;
+
+        yield next();
+    });
+}
+
 exports.isAuthenticated = isAuthenticated;
 exports.verifyToken = verifyToken;
+exports.associateCurrentUser = associateCurrentUser;

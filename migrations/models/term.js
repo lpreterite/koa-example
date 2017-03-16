@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  const terms = sequelize.define('term', {
+  const term = sequelize.define('term', {
     name: {
       type: DataTypes.STRING,
       allowNull: false
@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models){
-        terms.belongsTo(models.term, {as: 'parent'});
+        term.belongsTo(models.term, {as: 'parent'});
       }
     },
     freezeTableName: true,

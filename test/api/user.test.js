@@ -73,9 +73,6 @@ describe('User', function(){
                     })
                     .expect('Content-Type', /json/)
                     .expect(200)
-                    .expect((res)=>{
-                        if(res.body.password !== user.password) throw new Error('password do not updated!');
-                    })
                     .end(done);
             });
     });
