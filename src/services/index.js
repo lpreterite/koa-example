@@ -20,7 +20,7 @@ module.exports = function(app){
         })
         .forEach((file)=>{
             const service = require(path.join(__dirname, file));
-            services[file] = service(db.models);
+            services[file] = service(db.sequelize.models);
             const baseUri = ['auth'].indexOf(file) > -1 ? '' : '/api';
             router.use(baseUri, services[file].routes(), services[file].allowedMethods());
         });
@@ -28,7 +28,7 @@ module.exports = function(app){
     console.log('init services', Object.keys(services));
 
     //设置关联
-    const models = db.models;
+    const models = db.sequelize.models;
     Object.keys(models)
         .map(name => models[name])
         .filter(model => model.associate)
@@ -36,13 +36,12 @@ module.exports = function(app){
 
     db.sequelize.sync();
 
-    app.use((function(sequelize, services){
+    app.use((function(sequelize){
         return co.wrap(function *(ctx, next) {
             ctx.sequelize = sequelize;
-            ctx.services = services;
             yield next();
         });
-    })(db.sequelize, services));
+    })(db.sequelize));
     
     app.use(router.routes());
     app.use(router.allowedMethods());

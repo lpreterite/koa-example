@@ -3,7 +3,7 @@
 const config = require('config');
 const co = require('co');
 const compose = require('koa-convert').compose;
-const jwt = require('koa-jwt');
+const jwt = Object.assign(require('koa-jwt'), require('jsonwebtoken'));
 
 function isAuthenticated(){
     return compose([
@@ -17,6 +17,7 @@ function isAuthenticated(){
 function verifyToken(opts){
     opts = Object.assign({
         secret: config.get('secret'),
+        key: 'jwtData',
         passthrough: true
     }, opts);
     return compose([
@@ -32,7 +33,8 @@ function verifyToken(opts){
 
 function populateUser(){
     return co.wrap(function *(ctx, next){
-
+        const currentUser = yield ctx.sequelize.models.users.findById(ctx.state.jwtData._id);
+        ctx.state.user = ctx.state.user || currentUser.toJSON();
         yield next();
     });
 }
@@ -40,7 +42,7 @@ function populateUser(){
 function associateCurrentUser(opts){
     opts = Object.assign({as: 'uid'}, opts);
     return co.wrap(function *(ctx, next){
-        ctx.body[opts.as] = ctx.state.user.id;
+        ctx.request.body[opts.as] = ctx.state.user.id;
 
         yield next();
     });
@@ -49,3 +51,4 @@ function associateCurrentUser(opts){
 exports.isAuthenticated = isAuthenticated;
 exports.verifyToken = verifyToken;
 exports.associateCurrentUser = associateCurrentUser;
+exports.populateUser = populateUser;

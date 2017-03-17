@@ -5,20 +5,22 @@ const globalHooks = require('../../utils').hooks;
 const R = require('ramda');
 
 const convert = co.wrap(function *(ctx, next){
-    ctx.body = R.pipe(
+    ctx.request.body = R.pipe(
         R.assoc('term', {name:ctx.request.body.name}),
         R.assoc('taxonomy', 'category')
-    )(ctx.body);
+    )(ctx.request.body);
     yield next();
 });
 
 exports.before = {
     all: [
         authHooks.verifyToken({passthrough: false}),
+        authHooks.populateUser(),
     ],
     find: [],
     get: [],
     create: [
+        globalHooks.include([{ model: 'term' , as: 'term'}]),
         authHooks.associateCurrentUser(),
         convert
     ],

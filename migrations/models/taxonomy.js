@@ -1,10 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   const taxonomy = sequelize.define('taxonomy', {
-    termId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: false

@@ -13,3 +13,25 @@ exports.remove = function(attrName){
         yield next();
     });
 };
+
+exports.include = function(models){
+    if(models.constructor !== Array){
+        throw new Error('models must be Array');
+    }
+
+    return co.wrap(function *(ctx, next){
+
+        if(!ctx.params.sequelize){
+            ctx.params.sequelize = {include: []};
+        }
+
+        const include = models.map(function(item){
+            const result = typeof item.as === 'undefined' ? ctx.sequelize.models[item.model] : {model: ctx.sequelize.models[item.model], as: item.as};
+            return result;
+        });
+
+        ctx.params.sequelize.include = include.concat(ctx.params.sequelize.include);
+
+        yield next();
+    });
+};
