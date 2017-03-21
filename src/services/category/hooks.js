@@ -15,7 +15,7 @@ const convert = co.wrap(function *(ctx, next){
 exports.before = {
     all: [
         authHooks.verifyToken({passthrough: false}),
-        authHooks.populateUser(),
+        authHooks.populateUser()
     ],
     find: [],
     get: [],
@@ -38,7 +38,13 @@ exports.before = {
 exports.after = {
     all: [],
     find: [],
-    get: [],
+    get: [
+        co.wrap(function *(ctx, next){
+            let term = yield ctx.body.getTerm();
+            ctx.body = Object.assign(ctx.body.toJSON(), {term: term.toJSON()});
+            yield next();
+        })
+    ],
     create: [],
     update: [],
     patch: [],

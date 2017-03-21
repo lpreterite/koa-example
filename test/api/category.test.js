@@ -49,11 +49,12 @@ describe('Category', function(){
                 let category = res.body.data.pop();
                 request
                     .get('/api/category/'+category.id)
+                    .set('Authorization','Bearer ' + token)
                     .set('Accept', 'application/json')
-                    .expect('Content-Type', /json/)
                     .expect(function(res){
-                        if(!res.body.hasOwnProperty('password')) throw new Error('can not has password!');
+                        console.log(res.body);
                     })
+                    .expect('Content-Type', /json/)
                     .expect(200,done);
             });
     });
@@ -68,6 +69,7 @@ describe('Category', function(){
                 user.name = "Test111";
                 request
                     .put('/api/category/'+user.id)
+                    .set('Authorization','Bearer ' + token)
                     .send(user)
                     .expect('Content-Type', /json/)
                     .expect(200)
@@ -87,6 +89,7 @@ describe('Category', function(){
                 let user = res.body.data.pop();
                 request
                     .del('/api/category/'+user.id)
+                    .set('Authorization','Bearer ' + token)
                     .expect('Content-Type', /json/)
                     .expect(200, done);
             });
